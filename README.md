@@ -8,6 +8,7 @@ Sitio: https://camlopez98.github.io/minma/
 
 | Rol | Usuario | Contraseña | Qué ve |
 |---|---|---|---|
+| Persona nueva | `nuevo` | `minma-nuevo` | La configuración inicial en 7 pasos (consentimiento, permisos, apps de ocio, horarios, reglas con simulador de la alerta, reto diario y resumen) y su día 1 |
 | Usuaria | `valentina` | `sakura2026` | Su racha, su semana, el reto del día, el monedero con canjes, el comparador y el buzón anónimo |
 | Administrador | `admin` | `minma-admin` | Panel completo: resumen, comparador, registro diario y ética |
 

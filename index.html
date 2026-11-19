@@ -83,7 +83,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .field{display:flex;flex-direction:column;gap:6px}
 .field input{border:0;border-bottom:1px solid var(--line);background:transparent;padding:8px 2px;font-size:16px;border-radius:0}
 .field input:focus{outline:none;border-bottom-color:var(--ink)}
-.demo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.demo{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px}
 .demo button{appearance:none;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:2px}
 .demo button:hover{border-color:var(--ink-2)}
 .demo b{font-weight:700;font-size:14px}
@@ -233,6 +233,47 @@ tr.wk td{background:var(--surface-2);font-weight:700}
 .cat div{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
 .cat div:last-child{border-bottom:0}
 textarea{width:100%;min-height:80px;border:1px solid var(--line);border-radius:6px;background:var(--bg);padding:10px;resize:vertical}
+/* asistente de configuración */
+input[type=checkbox],input[type=range],input[type=radio]{accent-color:var(--shu)}
+.steps{display:flex;gap:6px}
+.steps span{flex:1;height:3px;background:var(--line);border-radius:2px}
+.steps span.on{background:var(--ink)}
+.step-k{font-size:12px;color:var(--muted);letter-spacing:.08em}
+.wz-nav{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.check{display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start;font-size:14px;cursor:pointer}
+.check input{margin-top:4px;width:16px;height:16px}
+.perm{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line)}
+.perm:last-child{border-bottom:0}
+.perm p{font-size:13px;color:var(--ink-2)}
+.ok-tag{color:var(--good-ink);font-weight:700;font-size:14px}
+.app-list{display:flex;flex-direction:column}
+.app-row{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.app-row:last-child{border-bottom:0}
+.app-ic{width:34px;height:34px;border-radius:9px;background:var(--surface-2);display:grid;place-items:center;font-family:var(--serif);font-weight:700;color:var(--ink-2)}
+.app-row.on .app-ic{background:var(--ink);color:var(--bg)}
+.app-row input{width:18px;height:18px}
+.tagsug{font-size:11px;color:var(--shu);margin-left:6px}
+.sched{border:1px solid var(--line);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.times{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;font-size:14px;color:var(--ink-2)}
+.times input[type=time]{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:6px 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{appearance:none;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:13.5px;color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.chip.day{width:38px;padding:5px 0;text-align:center}
+.range{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;font-size:14px}
+.range input{grid-column:1 / -1;width:100%}
+.range b{font-family:var(--serif);font-size:18px}
+.sim{background:var(--surface-2);border-radius:6px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.sim .meter{height:10px;border-radius:99px;background:var(--surface);overflow:hidden;position:relative}
+.sim .meter span{display:block;height:100%;background:var(--ink);border-radius:99px;transition:width .2s}
+.sim .meter span.over{background:var(--bad)}
+.sim-alert{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.sim-log{font-size:13px;color:var(--ink-2);min-height:20px}
+.timeline{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.timeline li{display:grid;grid-template-columns:56px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-2)}
+.timeline li:last-child{border-bottom:0}
+.timeline b{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:500}
+.timeline li.prot b{color:var(--shu)}
 footer{font-size:12px;color:var(--muted);text-align:center;letter-spacing:.04em}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -254,11 +295,54 @@ footer{font-size:12px;color:var(--muted);text-align:center;letter-spacing:.04em}
     <div style="display:flex;flex-direction:column;gap:8px">
       <span class="label">Cuentas de demostración</span>
       <div class="demo">
-        <button type="button" data-demo="valentina"><b>Valentina Ríos</b><span>Usuaria de la app</span></button>
+        <button type="button" data-demo="nuevo"><b>Persona nueva</b><span>Primer uso y configuración</span></button>
+        <button type="button" data-demo="valentina"><b>Valentina Ríos</b><span>Usuaria con 2 semanas</span></button>
         <button type="button" data-demo="admin"><b>Administrador</b><span>Programa de bienestar</span></button>
       </div>
     </div>
   </form>
+</section>
+
+<!-- ================= CONFIGURACIÓN ================= -->
+<section id="v-setup" hidden>
+  <div class="wrap narrow">
+    <header class="top">
+      <div class="brand"><div class="hanko" aria-hidden="true">ミ</div><b>Minma</b><span class="muted" style="font-size:13px" id="wzMode">Configuración inicial</span></div>
+      <button class="btn" type="button" id="wzExit">Cerrar sesión</button>
+    </header>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span class="step-k" id="wzCount"></span>
+      <div class="steps" id="wzDots"></div>
+    </div>
+    <div class="card" id="wzBody" style="gap:18px"></div>
+    <div class="wz-nav">
+      <button class="btn" type="button" id="wzBack">Atrás</button>
+      <span class="err" id="wzErr" role="alert" style="flex:1;text-align:center;min-height:0"></span>
+      <button class="btn primary" type="button" id="wzNext">Siguiente</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PERSONA NUEVA: DÍA 1 ================= -->
+<section id="v-new" hidden>
+  <div class="wrap narrow">
+    <header class="top">
+      <div class="brand"><div class="hanko" aria-hidden="true">ミ</div><b>Minma</b></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" data-settings>Mis ajustes</button><button class="btn" type="button" data-logout>Cerrar sesión</button></div>
+    </header>
+    <div class="u-hello">
+      <div class="ens" id="newEnso"></div>
+      <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+        <span class="label">Día 1</span>
+        <p class="greet" style="font-family:var(--serif);font-size:26px;line-height:1.3">Minma ya está midiendo.</p>
+        <p class="ink2" style="font-size:14px">Tu primer resumen llega mañana a las 7:00. Por ahora no tienes que hacer nada más: usa tu celular normal.</p>
+      </div>
+    </div>
+    <div class="card"><h3><span class="kanji">設</span>Así quedó tu Minma</h3><div class="rows" id="newSummary"></div></div>
+    <div class="card"><h3><span class="kanji">日</span>Un día con Minma</h3><ul class="timeline" id="newTimeline"></ul></div>
+    <button class="btn" type="button" id="newReset" style="align-self:center">Reiniciar la demostración</button>
+    <footer>Minma · Innovación y Liderazgo · Universidad de La Salle</footer>
+  </div>
 </section>
 
 <!-- ================= VISTA DE VALENTINA ================= -->
@@ -266,7 +350,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;letter-spacing:.04em}
   <div class="wrap narrow">
     <header class="top">
       <div class="brand"><div class="hanko" aria-hidden="true">ミ</div><b>Minma</b></div>
-      <button class="btn" type="button" data-logout>Cerrar sesión</button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" type="button" data-settings>Mis ajustes</button><button class="btn" type="button" data-logout>Cerrar sesión</button></div>
     </header>
 
     <div class="u-hello">
@@ -561,6 +645,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;letter-spacing:.04em}
 <script>
 // ================= Cuentas (prototipo: la validación ocurre en el navegador) =================
 const ACCOUNTS = {
+  nuevo:{pass:'minma-nuevo', role:'new'},
   valentina:{pass:'sakura2026', role:'user'},
   admin:{pass:'minma-admin', role:'admin'},
 };
@@ -920,11 +1005,174 @@ function draw(){
 // ================= Sesión =================
 const store={get(){try{return sessionStorage.getItem('minma-session')}catch(e){return null}},set(v){try{v?sessionStorage.setItem('minma-session',v):sessionStorage.removeItem('minma-session')}catch(e){}}};
 let built={user:false,admin:false};
+
+// ================= Configuración (asistente) =================
+const INSTALADAS=[
+ {n:'TikTok',c:'Video corto',sug:true},{n:'Instagram',c:'Red social',sug:true},{n:'YouTube',c:'Video',sug:true},
+ {n:'Netflix',c:'Series y películas',sug:true},{n:'X',c:'Red social',sug:true},{n:'Facebook',c:'Red social',sug:true},
+ {n:'Free Fire',c:'Juego',sug:true},{n:'Candy Crush',c:'Juego',sug:true},{n:'Spotify',c:'Música',sug:false},
+ {n:'WhatsApp',c:'Mensajería',sug:false},{n:'Duolingo',c:'Estudio',sug:false},{n:'Gmail',c:'Trabajo',sug:false},
+ {n:'Teams',c:'Trabajo',sug:false},{n:'Bancolombia',c:'Finanzas',sug:false},{n:'Google Maps',c:'Transporte',sug:false},
+];
+const TEMAS=['Inglés para el trabajo','Finanzas personales','Historia de Colombia','Cocina saludable','Programación básica','Primeros auxilios'];
+const DOW=['L','M','M','J','V','S','D'];
+const newCfg=()=>({consent:false,perms:{uso:false,over:false},apps:INSTALADAS.filter(a=>a.sug).map(a=>a.n),
+  noche:{on:true,ini:'22:00',fin:'06:00'},trab:{on:true,dias:[0,1,2,3,4],b:[['08:00','12:00'],['14:00','17:00']]},
+  tol:20,aviso:true,meta:5,temas:[],reto:'21:30',done:false});
+const CFG={valentina:{...newCfg(),consent:true,perms:{uso:true,over:true},apps:['TikTok','Instagram','YouTube','Netflix','X'],temas:['Inglés para el trabajo','Finanzas personales'],done:true}};
+try{Object.assign(CFG,JSON.parse(sessionStorage.getItem('minma-cfg')||'{}'))}catch(e){}
+const saveCfg=()=>{try{sessionStorage.setItem('minma-cfg',JSON.stringify(CFG))}catch(e){}};
+const toMin=t=>{const[h,m]=t.split(':').map(Number);return h*60+m};
+const spanMin=(a,b)=>(toMin(b)-toMin(a)+1440)%1440;
+const hhmm=m=>`${Math.floor(m/60)} h${m%60?' '+String(m%60).padStart(2,'0'):''}`;
+const weekly=c=>(c.noche.on?spanMin(c.noche.ini,c.noche.fin)*7:0)+(c.trab.on?c.trab.b.reduce((s,[a,b])=>s+Math.max(0,toMin(b)-toMin(a)),0)*c.trab.dias.length:0);
+const diasTxt=d=>{const n=['lunes','martes','miércoles','jueves','viernes','sábado','domingo'];if(d.join()==='0,1,2,3,4')return 'lunes a viernes';if(d.length===7)return 'todos los días';return d.map(i=>n[i]).join(', ')};
+const STEPS=['Bienvenida','Permisos','Apps de ocio','Horarios','Reglas de calma','Reto diario','Resumen'];
+let wz={who:null,cfg:null,step:0,mode:'new'}, override=null, sim={min:0,open:false,sal:0,cont:0,msg:''};
+
+function summaryRows(c){return [
+ ['Horario de dormir',c.noche.on?`${c.noche.ini} a ${c.noche.fin}`:'Desactivado'],
+ ['Trabajo o estudio',c.trab.on&&c.trab.dias.length?`${diasTxt(c.trab.dias)}, ${c.trab.b[0][0]}–${c.trab.b[0][1]} y ${c.trab.b[1][0]}–${c.trab.b[1][1]}`:'Desactivado'],
+ ['Apps de ocio',`${c.apps.length}: ${c.apps.slice(0,4).join(', ')}${c.apps.length>4?'…':''}`],
+ ['Minutos de ocio permitidos',`${c.tol} min al día${c.aviso?` · aviso a los ${c.tol-5}`:''}`],
+ ['Meta de pantalla',`${c.meta} h al día`],
+ ['Reto diario',`${c.temas.join(' y ')||'Sin tema'} · ${c.reto}`],
+ ['Permisos',c.perms.over?'Datos de uso y alerta activados':'Solo datos de uso (sin alerta)'],
+].map(([k,v])=>`<div><span class="ink2">${k}</span><b style="font-weight:500;text-align:right">${v}</b></div>`).join('')}
+function timeline(c){const ev=[];
+ if(c.noche.on) ev.push([c.noche.fin,'Termina tu horario de dormir.',true]);
+ ev.push(['07:00','Te llega el resumen de ayer: racha, monedas y minutos.',false]);
+ if(c.trab.on&&c.trab.dias.length){
+  ev.push([c.trab.b[0][0],'Empieza tu horario de trabajo. Si abres una app de ocio, Minma te pregunta si quieres seguir.',true]);
+  ev.push([c.trab.b[0][1],'Pausa: puedes usar tus apps sin que cuente.',false]);
+  ev.push([c.trab.b[1][0],'Vuelve el horario de trabajo.',true]);
+  ev.push([c.trab.b[1][1],'Termina el horario de trabajo.',false]);}
+ ev.push(['12:30','Te llega la lección del día (5 minutos).',false]);
+ ev.push([c.reto,'Reto: 3 preguntas sobre la lección.',false]);
+ if(c.noche.on) ev.push([c.noche.ini,`Empieza tu horario de dormir. Lo que uses de noche suma a los mismos ${c.tol} minutos del día.`,true]);
+ return ev.sort((a,b)=>toMin(a[0])-toMin(b[0])).map(([t,x,p])=>`<li class="${p?'prot':''}"><b>${t}</b><span>${x}</span></li>`).join('')}
+
+function openSetup(who,mode){
+  wz={who,cfg:JSON.parse(JSON.stringify(CFG[who]||newCfg())),step:mode==='edit'?2:0,mode}; sim={min:0,open:false,sal:0,cont:0,msg:''}; override='setup';
+  $('wzMode').textContent=mode==='edit'?'Mis ajustes':'Configuración inicial'; $('wzExit').textContent=mode==='edit'?'Cancelar':'Cerrar sesión';
+  renderStep(); route();
+}
+function renderStep(){
+  const c=wz.cfg,s=wz.step,B=$('wzBody'); $('wzErr').textContent='';
+  $('wzCount').textContent=`Paso ${s+1} de ${STEPS.length} · ${STEPS[s]}`;
+  $('wzDots').innerHTML=STEPS.map((_,i)=>`<span class="${i<=s?'on':''}"></span>`).join('');
+  $('wzBack').style.visibility=s===0?'hidden':'visible';
+  $('wzNext').textContent=s===STEPS.length-1?(wz.mode==='edit'?'Guardar cambios':'Empezar a usar Minma'):'Siguiente';
+  if(s===0){B.innerHTML=`<h2>Bienvenida a Minma</h2>
+    <p class="ink2">Minma te ayuda a usar menos el celular en las horas que tú elijas. No bloquea nada: te avisa y tú decides.</p>
+    <div class="cols2"><div><span class="label">Lo que mide</span><ul class="list" style="margin-top:8px"><li>Minutos en las apps que marques como ocio</li><li>La hora en que las usas</li><li>Si sales o sigues cuando te avisa</li><li>Tus respuestas del reto diario</li></ul></div>
+    <div><span class="label">Lo que nunca ve</span><ul class="list" style="margin-top:8px"><li>Lo que haces dentro de las apps</li><li>Mensajes, fotos ni contactos</li><li>Tu ubicación</li><li>Nada se comparte con tu empleador</li></ul></div></div>
+    <label class="check" for="wzConsent"><input type="checkbox" id="wzConsent" ${c.consent?'checked':''}><span>Entiendo qué datos usa Minma y acepto que los mida. Puedo pausar o borrar mis datos cuando quiera.</span></label>`;
+    $('wzConsent').onchange=e=>c.consent=e.target.checked;}
+  if(s===1){const row=(k,t,p)=>`<div class="perm"><div><b>${t}</b><p>${p}</p></div>${c.perms[k]?'<span class="ok-tag">✓ Activado</span>':`<button class="btn" type="button" data-perm="${k}">Activar</button>`}</div>`;
+    B.innerHTML=`<h2>Permisos del celular</h2><p class="ink2">Minma lee el mismo registro que usa “Bienestar digital” en Android. Tú no escribes minutos: el celular ya los cuenta. Para leerlos, Minma necesita dos permisos.</p>
+    <div>${row('uso','Acceso a datos de uso','Para saber qué app abriste, a qué hora y cuántos minutos. Obligatorio.')}${row('over','Mostrar sobre otras apps','Para que la alerta aparezca encima de la app de ocio. Sin este permiso Minma mide, pero no avisa.')}</div>
+    <p class="muted" style="font-size:12.5px">En un celular real, “Activar” abre los Ajustes de Android y das el permiso allí.</p>`;
+    B.querySelectorAll('[data-perm]').forEach(b=>b.onclick=()=>{c.perms[b.dataset.perm]=true;renderStep()});}
+  if(s===2){B.innerHTML=`<h2>¿Qué apps son de ocio para ti?</h2><p class="ink2">Estas son las apps de tu celular. Marca las que quieres que cuenten como ocio. Te sugerimos algunas, pero tú decides: si usas YouTube para estudiar, déjalo sin marcar.</p>
+    <div class="app-list">${INSTALADAS.map((a,i)=>{const on=c.apps.includes(a.n);return `<label class="app-row ${on?'on':''}" for="app${i}"><span class="app-ic" aria-hidden="true">${a.n[0]}</span><span>${a.n}${a.sug?'<span class="tagsug">sugerida</span>':''}<br><span class="muted" style="font-size:12.5px">${a.c}</span></span><input type="checkbox" id="app${i}" data-app="${a.n}" ${on?'checked':''}></label>`}).join('')}</div>
+    <p class="read" id="appCount"></p>`;
+    const upd=()=>{$('appCount').innerHTML=`<b>${c.apps.length} apps</b> cuentan como ocio. Las demás no se miden.`};upd();
+    B.querySelectorAll('[data-app]').forEach(x=>x.onchange=()=>{const n=x.dataset.app;c.apps=x.checked?[...c.apps,n]:c.apps.filter(a=>a!==n);x.closest('.app-row').classList.toggle('on',x.checked);upd()});}
+  if(s===3){B.innerHTML=`<h2>¿Cuándo quieres estar en calma?</h2><p class="ink2">En estos horarios Minma cuenta tu tiempo de ocio y te avisa si abres una de tus apps. Fuera de ellos, usa el celular como quieras.</p>
+    <div class="sched"><label class="check" for="nOn"><input type="checkbox" id="nOn" ${c.noche.on?'checked':''}><span><b>Horario de dormir</b><br><span class="muted" style="font-size:13px">Protege tu descanso.</span></span></label>
+      <div class="times"><label>Desde <input type="time" id="nIni" value="${c.noche.ini}"></label><label>hasta <input type="time" id="nFin" value="${c.noche.fin}"></label></div></div>
+    <div class="sched"><label class="check" for="tOn"><input type="checkbox" id="tOn" ${c.trab.on?'checked':''}><span><b>Horario de trabajo o estudio</b><br><span class="muted" style="font-size:13px">Para concentrarte.</span></span></label>
+      <div class="chips" role="group" aria-label="Días de trabajo">${DOW.map((d,i)=>`<button type="button" class="chip day" data-dow="${i}" aria-pressed="${c.trab.dias.includes(i)}">${d}</button>`).join('')}</div>
+      <div class="times"><label>Mañana <input type="time" id="b0a" value="${c.trab.b[0][0]}"></label><label>a <input type="time" id="b0b" value="${c.trab.b[0][1]}"></label></div>
+      <div class="times"><label>Tarde <input type="time" id="b1a" value="${c.trab.b[1][0]}"></label><label>a <input type="time" id="b1b" value="${c.trab.b[1][1]}"></label></div></div>
+    <p class="read" id="wkTot"></p>`;
+    const upd=()=>{$('wkTot').innerHTML=`En total, Minma protege <b>${hhmm(weekly(c))} a la semana</b>.`};upd();
+    $('nOn').onchange=e=>{c.noche.on=e.target.checked;upd()}; $('tOn').onchange=e=>{c.trab.on=e.target.checked;upd()};
+    $('nIni').onchange=e=>{c.noche.ini=e.target.value;upd()}; $('nFin').onchange=e=>{c.noche.fin=e.target.value;upd()};
+    [['b0a',0,0],['b0b',0,1],['b1a',1,0],['b1b',1,1]].forEach(([id,i,j])=>$(id).onchange=e=>{c.trab.b[i][j]=e.target.value;upd()});
+    B.querySelectorAll('[data-dow]').forEach(b=>b.onclick=()=>{const i=+b.dataset.dow;c.trab.dias=c.trab.dias.includes(i)?c.trab.dias.filter(x=>x!==i):[...c.trab.dias,i].sort((a,b)=>a-b);b.setAttribute('aria-pressed',c.trab.dias.includes(i));upd()});}
+  if(s===4){B.innerHTML=`<h2>Tus reglas de calma</h2>
+    <div class="range"><label for="rTol">Minutos de ocio permitidos al día dentro de tus horarios</label><b class="num" id="vTol">${c.tol} min</b><input type="range" id="rTol" min="10" max="30" step="5" value="${c.tol}"></div>
+    <div class="range"><label for="rMeta">Meta de pantalla total al día</label><b class="num" id="vMeta">${c.meta} h</b><input type="range" id="rMeta" min="3" max="8" step="1" value="${c.meta}"></div>
+    <label class="check" for="cAviso"><input type="checkbox" id="cAviso" ${c.aviso?'checked':''}><span>Avisarme cuando me queden 5 minutos</span></label>
+    <div style="display:flex;flex-direction:column;gap:8px"><h3>¿Cómo funciona la alerta?</h3><ul class="list" id="howList"></ul></div>
+    <div class="sim" id="sim"></div>`;
+    const how=()=>{$('howList').innerHTML=`<li><b>Aparece apenas abres</b> una app de ocio en tus horarios, no después de un rato. Sale cada vez que la abras.</li>
+      <li><b>Los ${c.tol} minutos son para todo el día</b>, sumando la noche y el trabajo. No se reinician cada vez que abres la app.</li>
+      <li><b>Si los pasas, ese día la racha se rompe</b> y no ganas monedas. Al día siguiente empiezas de cero.</li>
+      <li><b>Si eliges salir, no se cuenta nada</b> y tu racha sigue.</li>
+      <li>La noche cuenta para el día en que empieza: usar TikTok a las 00:30 del sábado suma al viernes.</li>`};
+    $('rTol').oninput=e=>{c.tol=+e.target.value;$('vTol').textContent=c.tol+' min';how();drawSim()};
+    $('rMeta').oninput=e=>{c.meta=+e.target.value;$('vMeta').textContent=c.meta+' h'};
+    $('cAviso').onchange=e=>{c.aviso=e.target.checked;drawSim()};
+    how();drawSim();}
+  if(s===5){B.innerHTML=`<h2>Tu reto diario</h2><p class="ink2">Cada día recibes una lección de 5 minutos y, en la noche, 3 preguntas sobre ella. Si estuviste en calma y respondes, ganas monedas. Elige uno o dos temas.</p>
+    <div class="chips" role="group" aria-label="Temas del reto">${TEMAS.map(t=>`<button type="button" class="chip" data-tema="${t}" aria-pressed="${c.temas.includes(t)}">${t}</button>`).join('')}</div>
+    <div class="times"><label>Hora del reto <input type="time" id="hReto" value="${c.reto}"></label></div>
+    <p class="read" id="retoNote"></p>`;
+    const note=()=>{const warn=c.noche.on&&toMin(c.noche.ini)>=720&&toMin(c.reto)>=toMin(c.noche.ini);
+      $('retoNote').innerHTML=warn?`El reto queda dentro de tu horario de dormir. Te recomendamos ponerlo antes de las ${c.noche.ini}.`:`El reto te llega a las <b>${c.reto}</b>${c.noche.on?`, antes de tu horario de dormir (${c.noche.ini})`:''}.`};note();
+    $('hReto').onchange=e=>{c.reto=e.target.value;note()};
+    B.querySelectorAll('[data-tema]').forEach(b=>b.onclick=()=>{const t=b.dataset.tema;
+      if(c.temas.includes(t)) c.temas=c.temas.filter(x=>x!==t);
+      else { if(c.temas.length>=2){$('wzErr').textContent='Puedes elegir hasta 2 temas.';return} c.temas=[...c.temas,t]; }
+      $('wzErr').textContent=''; B.querySelectorAll('[data-tema]').forEach(x=>x.setAttribute('aria-pressed',c.temas.includes(x.dataset.tema)))});}
+  if(s===6){B.innerHTML=`<h2>Así quedó tu Minma</h2>${wz.mode==='edit'?'<p class="read">Los cambios se aplican desde mañana. Tus datos anteriores no cambian.</p>':''}
+    <div class="rows">${summaryRows(c)}</div><h3 style="margin-top:6px"><span class="kanji">日</span>Un día con Minma</h3><ul class="timeline">${timeline(c)}</ul>
+    <p class="muted" style="font-size:12.5px">Las horas en rojo son tus horarios protegidos.</p>`;}
+}
+function drawSim(){
+  const el=$('sim'); if(!el) return; const c=wz.cfg,T=c.tol,over=sim.min>T;
+  el.innerHTML=`<div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap"><b>Pruébalo</b><span class="muted" style="font-size:13px">Simulación de un viernes en la noche</span></div>
+    <div style="display:flex;justify-content:space-between;gap:8px;font-size:13.5px"><span class="ink2">Ocio en tus horarios hoy</span><b class="num">${sim.min} de ${T} min</b></div>
+    <div class="meter"><span class="${over?'over':''}" style="width:${Math.min(100,sim.min/T*100)}%"></span></div>
+    ${sim.open?`<div class="sim-alert"><span class="label" style="color:var(--shu)">Horario de dormir activo</span><b style="font-family:var(--serif);font-size:18px">Vas a abrir TikTok.</b>
+      <span class="ink2" style="font-size:14px">${over?'Ya pasaste tus minutos de hoy: la racha de hoy ya se rompió. Mañana empiezas de nuevo.':`Llevas ${sim.min} de tus ${T} minutos de hoy. ¿Quieres seguir?`}</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" type="button" data-sim="salir">Salir y cuidar mi racha</button><button class="btn" type="button" data-sim="seguir">Seguir 5 minutos</button></div></div>`
+    :`<button class="btn" type="button" data-sim="abrir" style="align-self:flex-start">Abrir TikTok a las 23:10</button>`}
+    <p class="sim-log">${sim.msg}</p>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><span class="muted" style="font-size:12.5px">Aperturas ${sim.sal+sim.cont} · saliste ${sim.sal} · seguiste ${sim.cont}</span><button class="btn" type="button" data-sim="reset">Reiniciar</button></div>`;
+  el.querySelectorAll('[data-sim]').forEach(b=>b.onclick=()=>{const a=b.dataset.sim;
+    if(a==='abrir'){sim.open=true;sim.msg='La alerta salió apenas abriste la app.'}
+    if(a==='salir'){sim.open=false;sim.sal++;sim.msg=sim.min>T?'Saliste. La racha de hoy ya estaba rota, pero igual cuidas tu descanso.':'Saliste. No se contó ningún minuto y tu racha sigue.'}
+    if(a==='seguir'){sim.open=false;sim.cont++;const before=sim.min;sim.min+=5;
+      if(sim.min>T&&before<=T) sim.msg=`Pasaste los ${T} minutos: la racha de hoy se rompió y hoy no ganas monedas.`;
+      else if(sim.min>T) sim.msg='Sigues sumando minutos, pero la racha ya estaba rota.';
+      else if(sim.min===T) sim.msg='Llegaste justo al límite. Un minuto más y se rompe la racha.';
+      else if(c.aviso&&T-sim.min<=5) sim.msg=`Aviso: te quedan ${T-sim.min} minutos para hoy.`;
+      else sim.msg=`Seguiste 5 minutos. Te quedan ${T-sim.min} de los ${T} de hoy.`;}
+    if(a==='reset'){sim={min:0,open:false,sal:0,cont:0,msg:''}}
+    drawSim();});
+}
+function validate(){const c=wz.cfg,s=wz.step;
+  if(s===0&&!c.consent) return 'Para continuar, marca que aceptas cómo Minma usa tus datos.';
+  if(s===1&&!c.perms.uso) return 'Activa el acceso a datos de uso: sin él Minma no puede medir.';
+  if(s===2&&!c.apps.length) return 'Marca al menos una app de ocio.';
+  if(s===3){ if(!c.noche.on&&!(c.trab.on&&c.trab.dias.length)) return 'Activa al menos un horario.';
+    if(c.noche.on&&c.noche.ini===c.noche.fin) return 'El horario de dormir debe empezar y terminar a horas distintas.';
+    if(c.trab.on&&c.trab.b.some(([a,b])=>toMin(b)<=toMin(a))) return 'En el horario de trabajo, la hora final debe ser después de la inicial.'; }
+  if(s===5&&!c.temas.length) return 'Elige al menos un tema para tu reto.';
+  return '';
+}
+$('wzNext').onclick=()=>{const e=validate(); if(e){$('wzErr').textContent=e;return}
+  if(wz.step<STEPS.length-1){wz.step++;renderStep();scrollTo(0,0);return}
+  wz.cfg.done=true; CFG[wz.who]=wz.cfg; saveCfg(); override=null; route();};
+$('wzBack').onclick=()=>{if(wz.step>0){wz.step--;renderStep()}};
+$('wzExit').onclick=()=>{ if(wz.mode!=='edit') store.set(null); override=null; route(); };
+function renderNew(){const c=CFG.nuevo; enso($('newEnso'),0,7,'días en calma');
+  $('newSummary').innerHTML=summaryRows(c); $('newTimeline').innerHTML=timeline(c);}
+$('newReset').onclick=()=>{delete CFG.nuevo; saveCfg(); openSetup('nuevo','new');};
+document.querySelectorAll('[data-settings]').forEach(b=>b.onclick=()=>openSetup(store.get(),'edit'));
+
+function showView(id){['v-login','v-setup','v-new','v-user','v-admin'].forEach(v=>$(v).hidden=v!==id)}
 function route(){
   const who=store.get(), acc=who&&ACCOUNTS[who];
-  $('v-login').hidden=!!acc; $('v-user').hidden=!(acc&&acc.role==='user'); $('v-admin').hidden=!(acc&&acc.role==='admin');
-  if(acc&&acc.role==='user'&&!built.user){buildUser();built.user=true}
-  if(acc&&acc.role==='admin'){ if(!built.admin){buildAdmin();built.admin=true} showTab('resumen'); }
+  if(!acc){ override=null; showView('v-login'); }
+  else if(override==='setup'){ showView('v-setup'); }
+  else if(acc.role==='new'){ if(!CFG.nuevo||!CFG.nuevo.done){ openSetup('nuevo','new'); return; } renderNew(); showView('v-new'); }
+  else if(acc.role==='user'){ if(!built.user){buildUser();built.user=true} showView('v-user'); }
+  else { showView('v-admin'); if(!built.admin){buildAdmin();built.admin=true} showTab('resumen'); }
   window.scrollTo(0,0);
 }
 document.querySelectorAll('[data-demo]').forEach(b=>b.addEventListener('click',()=>{const u=b.dataset.demo;$('user').value=u;$('pass').value=ACCOUNTS[u].pass;$('err').textContent=''}));
