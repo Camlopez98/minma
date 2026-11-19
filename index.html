@@ -300,7 +300,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;letter-spacing:.04em}
     <div class="card">
       <div class="card-head"><h3><span class="kanji">貨</span>Tu monedero</h3><b class="num" id="uWallet"></b></div>
       <div class="bar"><span id="uWalletBar"></span></div>
-      <p class="muted" style="font-size:12.5px">El monedero llega hasta 120 monedas. Canjea antes de llenarlo para no perder lo que ganas.</p>
+      <p class="muted" style="font-size:12.5px">Cada día en calma te da 10 monedas, más 2 por acierto del reto y 5 extra desde el tercer día de racha. El monedero llega hasta 120: canjea antes de llenarlo para no perder lo que ganas.</p>
       <div class="cat" id="uCat"></div>
       <p class="read" id="uCatMsg" hidden></p>
     </div>
@@ -349,6 +349,7 @@ footer{font-size:12px;color:var(--muted);text-align:center;letter-spacing:.04em}
     <nav class="tabs" role="tablist">
       <button class="tab" role="tab" data-tab="resumen" aria-selected="true">Resumen</button>
       <button class="tab" role="tab" data-tab="comparar" aria-selected="false">Comparar</button>
+      <button class="tab" role="tab" data-tab="catalogo" aria-selected="false">Catálogo</button>
       <button class="tab" role="tab" data-tab="registro" aria-selected="false">Registro diario</button>
       <button class="tab" role="tab" data-tab="etica" aria-selected="false">Ética y datos</button>
     </nav>
@@ -468,6 +469,34 @@ footer{font-size:12px;color:var(--muted);text-align:center;letter-spacing:.04em}
       </section>
     </div>
 
+    <!-- Catálogo -->
+    <div data-pane="catalogo" hidden>
+      <div class="grid">
+        <section class="card c12">
+          <div class="card-head">
+            <div><h3><span class="kanji">貨</span>Valor de una moneda</h3><p>Las monedas no se cambian por efectivo; solo sirven para el catálogo.</p></div>
+          </div>
+          <div class="kpis" id="econ"></div>
+        </section>
+        <section class="card c5">
+          <h3><span class="kanji">得</span>Cómo se ganan</h3>
+          <div class="rows">
+            <div><span class="ink2">Día en calma (base)</span><b class="num">10</b></div>
+            <div><span class="ink2">Cada acierto del reto (máx. 3)</span><b class="num">+2</b></div>
+            <div><span class="ink2">Bono desde 3 días de racha</span><b class="num">+5</b></div>
+            <div><span class="ink2">Día con racha rota</span><b class="num">0</b></div>
+            <div><span>Máximo en un día</span><b class="num">21 · $1.050</b></div>
+          </div>
+          <p class="read">El monedero llega hasta <b>120 monedas</b>. Lo que pase del tope se pierde, para que la persona canjee seguido.</p>
+        </section>
+        <section class="card c7">
+          <h3><span class="kanji">品</span>Catálogo de recompensas</h3>
+          <div class="tbl-wrap"><table id="catTbl" style="min-width:520px"></table></div>
+          <p class="read">Todo el catálogo cuesta <b>120 monedas o menos</b>, así que cualquier recompensa se puede alcanzar sin pasar el tope. "Días en calma" es cuántos días buenos se necesitan, contando unas 16 monedas por día.</p>
+        </section>
+      </div>
+    </div>
+
     <!-- Registro -->
     <div data-pane="registro" hidden>
       <section class="card">
@@ -556,8 +585,18 @@ const DIAS = [
 ];
 const APPS = {labels:['TikTok','Instagram','YouTube','Netflix','X'], w1:[690,420,330,158,60], w2:[390,470,250,95,30]};
 const TOPE=120, LIMITE=20, META=300;
-const CANJES={13:{item:'Café y pan en aliado local',costo:60}};
-const CATALOGO=[{item:'Donación a una fundación',costo:40},{item:'Café y pan en aliado local',costo:60},{item:'20 % de descuento en librería',costo:90},{item:'Un mes de app de meditación',costo:150}];
+const VALOR=50; // 1 moneda = $50 pesos colombianos
+const CATALOGO=[
+  {item:'Donación a una fundación',     costo:30, nivel:'Básico',  aliado:'Fundación aliada'},
+  {item:'Fruta o snack saludable',      costo:50, nivel:'Básico',  aliado:'Tienda de barrio aliada'},
+  {item:'Recarga de transporte de $3.000', costo:60, nivel:'Medio', aliado:'Programa de bienestar'},
+  {item:'Café o aromática',             costo:70, nivel:'Medio',   aliado:'Cafetería aliada'},
+  {item:'Una semana de app de meditación', costo:80, nivel:'Medio', aliado:'App aliada'},
+  {item:'Libreta o cuaderno',           costo:100,nivel:'Premium', aliado:'Papelería aliada'},
+  {item:'Clase de yoga o pausa activa', costo:120,nivel:'Premium', aliado:'Estudio aliado'},
+];
+const CANJES={13:{item:'Café o aromática',costo:70}};
+const pesos=m=>'$'+(m*VALOR).toLocaleString('es-CO');
 
 // ================= Reglas: racha y monedero =================
 let racha=0,saldo=0,mejor=0;
@@ -728,9 +767,11 @@ function buildUser(){
   $('uWallet').textContent=`${FIN.saldo} / ${TOPE}`; $('uWalletBar').style.width=`${FIN.saldo/TOPE*100}%`;
   let bal=FIN.saldo;
   const drawCat=()=>{ $('uWallet').textContent=`${bal} / ${TOPE}`; $('uWalletBar').style.width=`${bal/TOPE*100}%`;
-    $('uCat').innerHTML=CATALOGO.map((c,i)=>{const can=bal>=c.costo, nunca=c.costo>TOPE;
-      return `<div><span>${c.item}<br><span class="muted num" style="font-size:12.5px">${c.costo} monedas${nunca?' · más que el tope':''}</span></span>
-      <button class="btn" type="button" data-buy="${i}" ${can?'':'disabled'}>${can?'Canjear':nunca?'Supera el tope':`Faltan ${Math.max(0,c.costo-bal)}`}</button></div>`}).join('');
+    let lastLvl='';
+    $('uCat').innerHTML=CATALOGO.map((c,i)=>{const can=bal>=c.costo;
+      const head = c.nivel!==lastLvl ? `<span class="label" style="padding-top:10px">${(lastLvl=c.nivel)}</span>` : '';
+      return `${head}<div><span>${c.item}<br><span class="muted num" style="font-size:12.5px">${c.costo} monedas · ${c.aliado}</span></span>
+      <button class="btn" type="button" data-buy="${i}" ${can?'':'disabled'}>${can?'Canjear':`Faltan ${c.costo-bal}`}</button></div>`}).join('');
     $('uCat').querySelectorAll('[data-buy]').forEach(b=>b.addEventListener('click',()=>{const c=CATALOGO[+b.dataset.buy];bal-=c.costo;
       const m=$('uCatMsg'); m.hidden=false; m.innerHTML=`Canjeaste <b>${c.item}</b>. Muestra esta pantalla en el aliado para reclamarlo. Saldo: ${bal} monedas.`; drawCat();}));
   };
@@ -773,8 +814,9 @@ function buildAdmin(){
   $('redeem').innerHTML=`
     <div><span class="ink2">Ganadas en 9 días en calma</span><b class="num">${K.ganadas}</b></div>
     <div><span class="ink2">Perdidas por llegar al tope (vie 13)</span><b class="num" style="color:var(--bad-ink)">−${K.perdidas}</b></div>
-    <div><span class="ink2">Canje: café y pan (sáb 14)</span><b class="num">−${K.canjeadas}</b></div>
-    <div><span>Saldo final</span><b class="num">${FIN.saldo} / ${TOPE}</b></div>`;
+    <div><span class="ink2">Canje: ${CANJES[13].item.toLowerCase()} (vie 13)</span><b class="num">−${K.canjeadas}</b></div>
+    <div><span>Saldo final</span><b class="num">${FIN.saldo} / ${TOPE}</b></div>
+    <div><span class="ink2">Costo real para el programa</span><b class="num">${pesos(K.canjeadas)}</b></div>`;
 
   $('alertRead').innerHTML=`Cómo leerlo: <b>más azul es mejor</b>. Salió el ${Math.round(K.sal1)} % de las veces en la semana 1 y el ${Math.round(K.sal2)} % en la semana 2.`;
   const tI=DIAS.filter(d=>d.tema==='I'&&d.tri!==null),tF=DIAS.filter(d=>d.tema==='F'&&d.tri!==null);
@@ -803,6 +845,15 @@ function buildAdmin(){
   const wk=(a,n)=>`<tr class="wk"><td>Semana ${n}</td><td>promedio / total</td><td>${hm(avg(a,'total'))}</td><td>${hm(avg(a,'ocio'))}</td><td>${Math.round(avg(a,'noct'))}</td><td>${sum(a,'enf')}</td><td>${Math.round(avg(a,'desb'))}</td><td>${sum(a,'al')}</td><td>${sum(a,'sal')}</td><td>${sum(a,d=>d.tri??0)}/${a.filter(d=>d.tri!==null).length*3}</td><td>${dec(avg(a,'animo'))}</td><td>${dec(avg(a,'sueno'))}</td><td></td><td>${a.filter(d=>d.valido).length}/7 en calma</td><td></td><td>+${sum(a,'ganadas')}</td><td>${a.at(-1).saldo}</td></tr>`;
   $('tbl').innerHTML=`<thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${W1.map(row).join('')}${wk(W1,1)}${W2.map(row).join('')}${wk(W2,2)}</tbody>`;
 
+  const maxQ=21*14;
+  $('econ').innerHTML=[
+    {l:'1 moneda',v:pesos(1),s:'pesos colombianos'},
+    {l:'Máximo por persona',v:pesos(maxQ),s:`${maxQ} monedas en 2 semanas`},
+    {l:'Ganó Valentina',v:pesos(K.ganadas),s:`${K.ganadas} monedas`},
+    {l:'Canjeó Valentina',v:pesos(K.canjeadas),s:`${K.canjeadas} monedas · costo real`},
+  ].map(k=>`<div class="kpi"><span class="label">${k.l}</span><span class="v">${k.v}</span><span class="sub">${k.s}</span></div>`).join('');
+  $('catTbl').innerHTML=`<thead><tr><th>Recompensa</th><th>Aliado</th><th>Nivel</th><th>Monedas</th><th>Valor</th><th>Días en calma</th></tr></thead><tbody>`+
+    CATALOGO.map(c=>`<tr><td>${c.item}</td><td>${c.aliado}</td><td>${c.nivel}</td><td>${c.costo}</td><td>${pesos(c.costo)}</td><td>≈ ${Math.ceil(c.costo/16)}</td></tr>`).join('')+'</tbody>';
   mountComparator(document.querySelector('[data-comparator="a"]'));
   document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 }
